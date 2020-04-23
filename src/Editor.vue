@@ -45,7 +45,7 @@ export default {
         uploadUrlHeader: {'Authorization': 'Client-ID db856b43cc7f441'},
         file_input_name: "image",
         imgur: true,
-        youtubeFrame: '<iframe width="100%" src="%s%" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+        youtubeFrame: '<iframe width="%w%" height="%h%" src="https://www.youtube.com/embed/%s%" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
         toolbar: {
           buttons: ["bold", "italic", "quote", "h1", "h2", "h3", "h4", "h5"]
         }
@@ -90,13 +90,14 @@ export default {
     destroyElm() {
       this.editor.destroy();
     },
-    addEmbededVideo (url) {
-      let video_id = window.location.search.split('v=')[1];
+    addEmbededVideo (url, height = '300px', width = '100%') {
+      let video_id = url.split('v=')[1];
       let ampersandPosition = video_id.indexOf('&');
       if(ampersandPosition != -1) {
         video_id = video_id.substring(0, ampersandPosition);
       }
-      this.content += this.options.youtubeFrame.replace('%s%', video_id)
+      let content = this.editor.getContent() + this.defaultOptions.youtubeFrame.replace('%s%', video_id).replace('%h%', height).replace('%w%', width)
+      this.editor.setContent(content)
     },
     triggerChange() {
       const content = this.editor.getContent();
