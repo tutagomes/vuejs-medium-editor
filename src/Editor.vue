@@ -16,12 +16,12 @@
                 :onChange="triggerChange"></list-handler>
             <div class="editor" 
                 v-bind:class="editorClass"
-                v-html="value"
+                v-html="prefill"
                 ref="editor">
             </div>
         </div>
         <!-- Read Only Mode -->
-        <read-mode v-if="readOnly" :content="value"></read-mode>
+        <read-mode v-if="readOnly" :content="prefill"></read-mode>
     </div>
 </template>
 
@@ -45,6 +45,7 @@ export default {
         uploadUrlHeader: {'Authorization': 'Client-ID db856b43cc7f441'},
         file_input_name: "image",
         imgur: true,
+        youtubeFrame: '<iframe width="100%" src="%s%" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
         toolbar: {
           buttons: ["bold", "italic", "quote", "h1", "h2", "h3", "h4", "h5"]
         }
@@ -52,7 +53,7 @@ export default {
       hasContent: false
     };
   },
-  props: ["options", "onChange", "value", "readOnly"],
+  props: ["options", "onChange", "prefill", "readOnly"],
   computed: {
     editorOptions() {
       return _.extend(this.defaultOptions, this.options);
@@ -76,8 +77,8 @@ export default {
   methods: {
     createElm() {
       this.editor = new MediumEditor(this.$refs.editor, this.editorOptions);
-      if (this.value) {
-        if (/<[a-z][\s\S]*>/i.test(this.value)) {
+      if (this.prefill) {
+        if (/<[a-z][\s\S]*>/i.test(this.prefill)) {
           this.hasContent = true;
         } else {
           this.hasContent = false;
@@ -88,6 +89,14 @@ export default {
     },
     destroyElm() {
       this.editor.destroy();
+    },
+    addEmbededVideo (url) {
+      let video_id = window.location.search.split('v=')[1];
+      let ampersandPosition = video_id.indexOf('&');
+      if(ampersandPosition != -1) {
+        video_id = video_id.substring(0, ampersandPosition);
+      }
+      this.content += this.options.youtubeFrame.replace('%s%', video_id)
     },
     triggerChange() {
       const content = this.editor.getContent();
