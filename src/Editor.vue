@@ -16,12 +16,12 @@
                 :onChange="triggerChange"></list-handler>
             <div class="editor" 
                 v-bind:class="editorClass"
-                v-html="prefill"
+                v-html="value"
                 ref="editor">
             </div>
         </div>
         <!-- Read Only Mode -->
-        <read-mode v-if="readOnly" :content="prefill"></read-mode>
+        <read-mode v-if="readOnly" :content="value"></read-mode>
     </div>
 </template>
 
@@ -52,7 +52,7 @@ export default {
       hasContent: false
     };
   },
-  props: ["options", "onChange", "prefill", "readOnly"],
+  props: ["options", "onChange", "value", "readOnly"],
   computed: {
     editorOptions() {
       return _.extend(this.defaultOptions, this.options);
@@ -76,8 +76,8 @@ export default {
   methods: {
     createElm() {
       this.editor = new MediumEditor(this.$refs.editor, this.editorOptions);
-      if (this.prefill) {
-        if (/<[a-z][\s\S]*>/i.test(this.prefill)) {
+      if (this.value) {
+        if (/<[a-z][\s\S]*>/i.test(this.value)) {
           this.hasContent = true;
         } else {
           this.hasContent = false;

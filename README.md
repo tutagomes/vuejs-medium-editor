@@ -47,7 +47,7 @@ require 'vuejs-medium-editor/src/themes/default.css'
 usage
 
 ```js
-<medium-editor :content='content' :options='options' />
+<medium-editor v-model='content' :options='options' />
 
 <script>
 export default {
