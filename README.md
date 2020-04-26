@@ -105,6 +105,8 @@ options: {
     uploadUrlHeader: {'Authorization': 'Client-ID a3tw6ve4wss3c'},
     file_input_name: "image",
     imgur: true,
+    // hideImage: true - will hide the image picker
+    // hideGist: true - will hide the gist inserter
  }
 
 ```

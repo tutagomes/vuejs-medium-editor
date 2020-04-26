@@ -10,7 +10,10 @@
                 :onChange="triggerChange"
                 :editorRef="$refs.editor"
                 :editor="editor"
-                v-on:uploaded="uploadedCallback"></insert-embed>
+                v-on:uploaded="uploadedCallback"
+                :hideImage="options.hideImage"
+                :hideGist="options.hideGist"
+                ></insert-embed>
             <list-handler v-if="editor"
                 :editor="editor"
                 :onChange="triggerChange"></list-handler>

@@ -18,9 +18,12 @@
                     :handler="handler"
                     v-on:uploaded="uploadCallback"
                     v-on:imageClick="imageClickHandler"
+                    v-if="!insert.hideImage"
                 ></insert-image>
                 <insert-gist :editor="editor"
-                    v-on:onChange="onChange" :insert="insert"></insert-gist>
+                    v-on:onChange="onChange" :insert="insert"
+                    v-if="!insert.hideGist"
+                    ></insert-gist>
             </div>
         </div>
         <image-position
@@ -57,7 +60,9 @@ export default {
                 isToggle: false,
                 embedElm: null,
                 files: [],
-                focusLine: null
+                focusLine: null,
+                hideGist: true,
+                hideImage: false
             },
             handler: {
                 currentLine: null,
@@ -77,7 +82,9 @@ export default {
         'file_input_name',
         'imgur_bool',
         'editorRef',
-        'onChange'
+        'onChange',
+        'hideGist',
+        'hideImage'
     ],
     methods: {
         subscribe() {
@@ -170,6 +177,8 @@ export default {
     },
     mounted() {
         this.subscribe()
+        this.insert.hideGist = this.hideGist
+        this.insert.hideImage = this.hideImage
     },
     destroyed() {
         this.unsubscribe()
